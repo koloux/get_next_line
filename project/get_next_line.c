@@ -6,7 +6,7 @@
 /*   By: nhuber <nhuber@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/20 17:00:19 by nhuber            #+#    #+#             */
-/*   Updated: 2016/03/21 12:03:56 by nhuber           ###   ########.fr       */
+/*   Updated: 2016/03/26 15:40:36 by nhuber           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,94 +16,73 @@ int	get_next_line(int fd, char **line)
 {
 	char		buf[BUFF_SIZE + 1];	
 	int		ret;
-	static t_list	*head;
+	static gnl_lst	*head;
+	char		*tmp;
 
-	while (*line != NULL && fd >= 0 && (ret = read(fd, buf, BUFF_SIZE)))
+	while (*line != NULL && (ret = read(fd, buf, BUFF_SIZE)) != 0)
 	{
+		if (ret == -1)
+			return (-1);
 		buf[ret] = '\0';
-		if (ft_strstr(buf, "\n") != NULL)
+		if (gnl_build(fd, buf, ret, &head) == 1)
 		{
-			*line = gnl_found(fd, buf, &head);
+			*line = gnl_trim(fd, &head);
 			return (1);
 		}
-		else if (ret < BUFF_SIZE)
-		{
-			*line = gnl_eof(fd, buf, &head);
-			return (0);
-		}
-		else
-			gnl_build(fd, buf, &head);
 	}
-	return (-1);
+	if ((tmp = gnl_trim(fd, &head)) != NULL)
+		return (1);
+	return (0);
 }
 
-char	*gnl_found(int fd, char *buf, t_list **head)
+char	*gnl_trim(int fd, gnl_lst **head)
 {
+	gnl_lst	*elem;
+	char	*bgn;
 	char	*end;
-	char	*begin;
-	char	*str;
-	t_list	*elem;
+	size_t	lend;
 
-	if (!(begin = ft_strnew(BUFF_SIZE)))
+	elem = gnl_search(fd, head);
+	if (elem == NULL)
 		return (NULL);
-	end = ft_strstr(buf, "\n");
-	begin = ft_strncpy(begin, buf, (ft_strlen(buf) - ft_strlen(end)));
-	if ((elem = gnl_build(fd, begin, head)) != NULL)
-	{
-		str = ft_strstr(elem->content, "-");
-		begin = ft_strdup(str);
-		++begin;
-		ft_bzero(elem->content, elem->content_size);
-		gnl_build(fd, ++end, head);
-	}
-	return (begin);
+	end = ft_strstr(elem->content, "\n");
+	lend = ft_strlen(++end) + 1;
+	bgn = ft_memdup(elem->content, (elem->content_size - lend));
+	elem->content = end;
+	elem->content_size = ft_strlen(end);
+	return (bgn);
 }
 
-char	*gnl_eof(int fd, char *buf, t_list **head)
+gnl_lst	*gnl_search(int fd, gnl_lst **head)
 {
-	t_list	*elem;
-	char	*ret;
+	gnl_lst	*tmp;
 
-	if ((elem = gnl_build(fd, buf, head)) != NULL)
-	{
-		ret = ft_strstr(elem->content, "-");
-		++ret;
-		return (ret);
-	}
-	else
-		return (ft_strdup(buf));
+	tmp = *head;
+	while (tmp && tmp->fd != fd)
+		tmp = tmp->next;
+	return (tmp);
 }
 
-t_list	*gnl_build(int fd, char *str, t_list **head)
+int	gnl_build(int fd, char *buf, int ret, gnl_lst **head)
 {
-	char	*s1;
-	char	*s2;
-	size_t	len;
-	t_list	*elem;
+	gnl_lst	*elem;
+	char	*str;
 
-	s1 = ft_itoa(fd);
-	len = ft_strlen(s1);
-	elem = *head;
-	while (elem && ft_strncmp(elem->content, s1, len))
-		elem = elem->next;
+	elem = gnl_search(fd, head);
 	if (elem == NULL)
 	{
-		if (!(s2 = (char *)ft_memalloc(len + ft_strlen(str) + 2)))
-		{
-			free(s1);
-			return (NULL);
-		}
-		s2 = ft_strcat(s1, "-");
-		s2 = ft_strcat(s2, str);
-		ft_lstaddback(head, ft_lstnew(s2, ft_strlen(s2)));
-		return (NULL);
+		elem = (gnl_lst *)ft_lstnew(ft_memdup(buf, ret + 1), 
+				ret + 1);
+		elem->fd = fd;
+		ft_lstaddback((t_list **)head, (t_list *)elem);
 	}
 	else
 	{
-		s2 = ft_strjoin(elem->content, str);
-		elem->content = s2;
-		elem->content_size = ft_strlen(s2);
+		str = ft_strjoin(elem->content, buf);
+		elem->content = str;
+		elem->content_size = ft_strlen(str);
 	}
-	free(s1);
-	return (elem);
+	if (ft_strstr(elem->content, "\n") != NULL)
+		return (1);
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: nhuber <nhuber@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/22 16:02:05 by nhuber            #+#    #+#             */
-/*   Updated: 2016/03/20 15:24:49 by nhuber           ###   ########.fr       */
+/*   Updated: 2016/03/24 21:40:46 by nhuber           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,5 +93,6 @@ void	ft_bitsetfour(unsigned int *i, unsigned int val, unsigned int index);
 unsigned int	ft_bitgetfour(unsigned int i, unsigned int index);
 unsigned int	ft_bitgetoctal(unsigned int i, unsigned int index);
 unsigned int	ft_sqroot(unsigned int n);
+void	*ft_memdup(const void *src, size_t n);
 
 #endif

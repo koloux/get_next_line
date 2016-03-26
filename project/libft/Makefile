@@ -6,7 +6,7 @@
 #    By: nhuber <nhuber@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/01/06 23:15:02 by kpiacent          #+#    #+#              #
-#*   Updated: 2016/03/20 15:34:16 by nhuber           ###   ########.fr       *#
+#*   Updated: 2016/03/24 22:22:44 by nhuber           ###   ########.fr       *#
 #                                                                              #
 #******************************************************************************#
 
@@ -31,7 +31,7 @@ FILES = ft_islower.c ft_memmove.c ft_strcat.c ft_strjoin.c ft_strnstr.c \
 		ft_bitgetoctal.c \
 		ft_lstadd.c ft_lstdel.c ft_lstdelone.c ft_lstiter.c \
 		ft_lstmap.c ft_lstnew.c ft_lstput.c ft_lstaddback.c \
-		ft_lstremoveif.c
+		ft_lstremoveif.c ft_memdup.c
 		
 NAME = libft.a
 OBJ = $(FILES:.c=.o)
