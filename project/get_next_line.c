@@ -6,7 +6,7 @@
 /*   By: nhuber <nhuber@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/20 17:00:19 by nhuber            #+#    #+#             */
-/*   Updated: 2016/03/26 15:40:36 by nhuber           ###   ########.fr       */
+/*   Updated: 2016/03/28 17:54:01 by nhuber           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,10 @@ int	get_next_line(int fd, char **line)
 	char		buf[BUFF_SIZE + 1];	
 	int		ret;
 	static gnl_lst	*head;
-	char		*tmp;
 
-	while (*line != NULL && (ret = read(fd, buf, BUFF_SIZE)) != 0)
+	while ((ret = read(fd, buf, BUFF_SIZE)) != 0)
 	{
-		if (ret == -1)
+		if (ret == -1 || fd < 0 || line == NULL)
 			return (-1);
 		buf[ret] = '\0';
 		if (gnl_build(fd, buf, ret, &head) == 1)
@@ -30,7 +29,7 @@ int	get_next_line(int fd, char **line)
 			return (1);
 		}
 	}
-	if ((tmp = gnl_trim(fd, &head)) != NULL)
+	if ((*line = gnl_trim(fd, &head)) != NULL)
 		return (1);
 	return (0);
 }
@@ -40,17 +39,25 @@ char	*gnl_trim(int fd, gnl_lst **head)
 	gnl_lst	*elem;
 	char	*bgn;
 	char	*end;
-	size_t	lend;
+	size_t	len;
 
 	elem = gnl_search(fd, head);
-	if (elem == NULL)
+	if (elem->content == NULL)
 		return (NULL);
-	end = ft_strstr(elem->content, "\n");
-	lend = ft_strlen(++end) + 1;
-	bgn = ft_memdup(elem->content, (elem->content_size - lend));
-	elem->content = end;
-	elem->content_size = ft_strlen(end);
-	return (bgn);
+	if ((end = ft_strchr(elem->content, 10)) != NULL)
+	{
+		len = elem->content_size - ft_strlen(end);
+		bgn = ft_strsub(elem->content, 0, len - 1);
+		elem->content = ++end;
+		elem->content_size = ft_strlen(end) + 1;
+	}
+	else
+	{
+		bgn = elem->content;
+		elem->content = NULL;
+		elem->content_size = 0;
+	}
+	return ((ft_strlen(bgn) == 0) ? NULL : bgn);
 }
 
 gnl_lst	*gnl_search(int fd, gnl_lst **head)
@@ -67,12 +74,13 @@ int	gnl_build(int fd, char *buf, int ret, gnl_lst **head)
 {
 	gnl_lst	*elem;
 	char	*str;
-
-	elem = gnl_search(fd, head);
+	
+	elem = *head;
+	while (elem && elem->fd != fd)
+		elem = elem->next;
 	if (elem == NULL)
 	{
-		elem = (gnl_lst *)ft_lstnew(ft_memdup(buf, ret + 1), 
-				ret + 1);
+		elem = (gnl_lst *)ft_lstnew(buf, (size_t)(ret + 1));
 		elem->fd = fd;
 		ft_lstaddback((t_list **)head, (t_list *)elem);
 	}
@@ -80,7 +88,7 @@ int	gnl_build(int fd, char *buf, int ret, gnl_lst **head)
 	{
 		str = ft_strjoin(elem->content, buf);
 		elem->content = str;
-		elem->content_size = ft_strlen(str);
+		elem->content_size = ft_strlen(str) + 1;
 	}
 	if (ft_strstr(elem->content, "\n") != NULL)
 		return (1);

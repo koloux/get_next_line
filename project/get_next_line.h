@@ -6,13 +6,13 @@
 /*   By: nhuber <nhuber@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/16 11:06:10 by nhuber            #+#    #+#             */
-/*   Updated: 2016/03/26 15:04:21 by nhuber           ###   ########.fr       */
+/*   Updated: 2016/03/28 17:54:03 by nhuber           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
-# include "libft.h"
+# include "libft/libft.h"
 # include <stdlib.h>
 # include <unistd.h>
 # define BUFF_SIZE 32
