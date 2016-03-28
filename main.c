@@ -6,7 +6,7 @@
 /*   By: nhuber <nhuber@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/17 10:32:36 by nhuber            #+#    #+#             */
-/*   Updated: 2016/03/28 17:52:17 by nhuber           ###   ########.fr       */
+/*   Updated: 2016/03/28 18:54:54 by nhuber           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ int	main(int ac, char **av)
 {
 
 	int	fd;
+	int	fd2;
+	int	fd3;
 	char	*line;
 	int	nb = 1;
 	int	ret;
@@ -26,10 +28,21 @@ int	main(int ac, char **av)
 	line = malloc(sizeof(char) * 81);
 	line[80] = '\0';
 	fd = open(av[1], O_RDONLY);
-	while ((ret = get_next_line(fd, &line)) > 0 && nb < 4)
+	fd2 = open(av[2], O_RDONLY);
+	fd3 = open(av[3], O_RDONLY);
+	while (nb < 5)
 	{
-		printf(" FD :%d line %d:%s", fd, nb++, line);
+		ret = get_next_line(fd, &line);
+		printf("RET :%d FD :%d line %d:%s", ret, fd, nb++, line);
+		/*
 		printf("\n-----------------%d------------------\n", ret);
+		ret = get_next_line(fd2, &line);
+		printf(" FD :%d line %d:%s", fd2, nb, line);
+		printf("\n-----------------%d------------------\n", ret);
+		ret = get_next_line(fd3, &line);
+		printf(" FD :%d line %d:%s", fd3, nb++, line);
+		printf("\n-----------------%d------------------\n", ret);
+		*/
 	}
 	return (0);
 }

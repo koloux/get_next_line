@@ -6,7 +6,7 @@
 /*   By: nhuber <nhuber@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/20 17:00:19 by nhuber            #+#    #+#             */
-/*   Updated: 2016/03/28 17:54:01 by nhuber           ###   ########.fr       */
+/*   Updated: 2016/03/28 18:54:56 by nhuber           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ char	*gnl_trim(int fd, gnl_lst **head)
 	{
 		len = elem->content_size - ft_strlen(end);
 		bgn = ft_strsub(elem->content, 0, len - 1);
-		elem->content = ++end;
+		elem->content = (ft_strlen(++end) == 0) ? NULL : end;
 		elem->content_size = ft_strlen(end) + 1;
 	}
 	else
@@ -57,7 +57,7 @@ char	*gnl_trim(int fd, gnl_lst **head)
 		elem->content = NULL;
 		elem->content_size = 0;
 	}
-	return ((ft_strlen(bgn) == 0) ? NULL : bgn);
+	return (bgn);
 }
 
 gnl_lst	*gnl_search(int fd, gnl_lst **head)
