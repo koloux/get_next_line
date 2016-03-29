@@ -6,7 +6,7 @@
 /*   By: nhuber <nhuber@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/20 17:00:19 by nhuber            #+#    #+#             */
-/*   Updated: 2016/03/28 18:54:56 by nhuber           ###   ########.fr       */
+/*   Updated: 2016/03/29 16:15:58 by nhuber           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	get_next_line(int fd, char **line)
 
 	while ((ret = read(fd, buf, BUFF_SIZE)) != 0)
 	{
-		if (ret == -1 || fd < 0 || line == NULL)
+		if (ret < 0 || fd < 0 || line == NULL)
 			return (-1);
 		buf[ret] = '\0';
 		if (gnl_build(fd, buf, ret, &head) == 1)
@@ -44,7 +44,7 @@ char	*gnl_trim(int fd, gnl_lst **head)
 	elem = gnl_search(fd, head);
 	if (elem->content == NULL)
 		return (NULL);
-	if ((end = ft_strchr(elem->content, 10)) != NULL)
+	if ((end = ft_strchr(elem->content, '\n')) != NULL)
 	{
 		len = elem->content_size - ft_strlen(end);
 		bgn = ft_strsub(elem->content, 0, len - 1);
@@ -87,6 +87,7 @@ int	gnl_build(int fd, char *buf, int ret, gnl_lst **head)
 	else
 	{
 		str = ft_strjoin(elem->content, buf);
+		free((*elem).content);
 		elem->content = str;
 		elem->content_size = ft_strlen(str) + 1;
 	}

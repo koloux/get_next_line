@@ -6,7 +6,7 @@
 /*   By: nhuber <nhuber@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/16 11:06:10 by nhuber            #+#    #+#             */
-/*   Updated: 2016/03/28 17:54:03 by nhuber           ###   ########.fr       */
+/*   Updated: 2016/03/29 16:00:39 by nhuber           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 # include "libft/libft.h"
 # include <stdlib.h>
 # include <unistd.h>
-# define BUFF_SIZE 32
+# define BUFF_SIZE 3 
 
 #include <stdio.h>
 

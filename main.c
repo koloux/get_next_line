@@ -6,7 +6,7 @@
 /*   By: nhuber <nhuber@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/17 10:32:36 by nhuber            #+#    #+#             */
-/*   Updated: 2016/03/28 18:54:54 by nhuber           ###   ########.fr       */
+/*   Updated: 2016/03/29 15:06:30 by nhuber           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@ int	main(int ac, char **av)
 	while (nb < 5)
 	{
 		ret = get_next_line(fd, &line);
-		printf("RET :%d FD :%d line %d:%s", ret, fd, nb++, line);
-		/*
+		printf("FD :%d line %d:%s", fd, nb++, line);
 		printf("\n-----------------%d------------------\n", ret);
+		/*
 		ret = get_next_line(fd2, &line);
 		printf(" FD :%d line %d:%s", fd2, nb, line);
 		printf("\n-----------------%d------------------\n", ret);

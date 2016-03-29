@@ -6,7 +6,7 @@
 #*   By: nhuber <nhuber@student.42.fr>              +#+  +:+       +#+        *#
 #*                                                +#+#+#+#+#+   +#+           *#
 #*   Created: 2016/03/07 09:32:29 by nhuber            #+#    #+#             *#
-#*   Updated: 2016/03/26 16:23:22 by nhuber           ###   ########.fr       *#
+#*   Updated: 2016/03/29 15:18:39 by nhuber           ###   ########.fr       *#
 #*                                                                            *#
 #* ************************************************************************** *#
 
@@ -38,6 +38,7 @@ fclean : clean
 
 test :
 	@echo Executing test :
+	@$(CC) -o $(NAME) $(FLAGS) mainb.c $(F_DIR)/get_next_line.c -I $(L_DIR) -L $(L_DIR) -lft
 	@./$(NAME)
 
 re : fclean all
