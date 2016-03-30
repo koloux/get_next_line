@@ -6,7 +6,7 @@
 /*   By: nhuber <nhuber@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/16 11:06:10 by nhuber            #+#    #+#             */
-/*   Updated: 2016/03/29 16:00:39 by nhuber           ###   ########.fr       */
+/*   Updated: 2016/03/30 15:56:14 by nhuber           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 # include "libft/libft.h"
 # include <stdlib.h>
 # include <unistd.h>
-# define BUFF_SIZE 3 
+# define BUFF_SIZE 10000 
 
 #include <stdio.h>
 
@@ -28,7 +28,7 @@ typedef struct		s_llst
 }			gnl_lst;
 
 int	get_next_line(int const fd, char **line);
-int	gnl_build(int fd, char *buf, int ret, gnl_lst **head);
+int	gnl_build(int fd, char *buf, gnl_lst **head);
 gnl_lst	*gnl_search(int fd, gnl_lst **head);
 char	*gnl_trim(int fd, gnl_lst **head);
 

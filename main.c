@@ -6,7 +6,7 @@
 /*   By: nhuber <nhuber@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/17 10:32:36 by nhuber            #+#    #+#             */
-/*   Updated: 2016/03/29 15:06:30 by nhuber           ###   ########.fr       */
+/*   Updated: 2016/03/30 11:24:11 by nhuber           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 int	main(int ac, char **av)
 {
 
+	int	fd0 = 0;
 	int	fd;
 	int	fd2;
 	int	fd3;
@@ -27,6 +28,15 @@ int	main(int ac, char **av)
 	(void)ac;
 	line = malloc(sizeof(char) * 81);
 	line[80] = '\0';
+	write(fd0, "aaa\nbbb", 7);
+	close(fd0);
+	ret = get_next_line(fd0, &line);
+	printf("FD :%d line 1 :%s", fd0, line);
+	printf("\n-----------------%d------------------\n", ret);
+	ret = get_next_line(fd0, &line);
+	printf("FD :%d line 2 :%s", fd0, line);
+	printf("\n-----------------%d------------------\n", ret);
+	
 	fd = open(av[1], O_RDONLY);
 	fd2 = open(av[2], O_RDONLY);
 	fd3 = open(av[3], O_RDONLY);
